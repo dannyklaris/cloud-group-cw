@@ -17,7 +17,6 @@ This is a group project that consists of 6 members. This project is focused on c
 
 ## Usage
 
-## Discord Webhook test
 
 ## To-do
 ### General
