@@ -20,11 +20,13 @@ This is a group project that consists of 6 members. This project is focused on c
 ## Current progress
 - I've already prepared a draft for the [requirements](docs/requirements.md) document.
 - I've also prepared a draft for the back-end implementation planning in this [back-end document](docs/backendDraft.md). (**PLEASE READ IF YOU'RE IN THE BACK-END TEAM**)
+- I've prepared and initialised the backend folder with Azure Functions and testing folder for them.
 ## To-do
 ### **FOR EVERYONE**
 - Please read the current [requirements](docs/requirements.md) and add requirements in there for the project.
 ### **FOR BACKEND TEAM**
 - Please read the [back-end document](docs/backendDraft.md) and modify or add anything in it if needed.
+- Complete the functions in the backend folder.
 ### **FOR FRONTEND TEAM**
 
 ## Teams
