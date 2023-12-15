@@ -7,28 +7,25 @@ This is a group project that consists of 6 members. This project is focused on c
 
 ## Table of Contents
 - [Installation](#installation)
-- [Usage](#usage)
+- [Current progress](#current-progress)
 - [To-do](#to-do)
 - [Teams](#teams)
 - [Authors and acknowledgement](#authors-and-acknowledgment)
 
 
 ## Installation
+### How to view the .md file much better?
+- To view the .md file much better in Visual Studio Code (assuming you use VSC), go to `Settings -> Extension` and search for **Markdown Preview Github Styling**. Install the extension and when you see a .md file, you can `right-click -> Open Preview`. That way you can view the .md file much better in your VSC.
 
-## Usage
-
-
+## Current progress
+- I've already prepared a draft for the [requirements](docs/requirements.md) document.
+- I've also prepared a draft for the back-end implementation planning in this [back-end document](docs/backendDraft.md). (**PLEASE READ IF YOU'RE IN THE BACK-END TEAM**)
 ## To-do
-### General
-- prepare a [requirements](docs/requirements.docx) document
-- prepare a [gantt chart](docs/gantt.xlsx) timeline
-- prepare a [group report](docs/group-report.docx)
-- prepare an individual report
-- prepare for presentation and live demo
-### Back-end
-- setup cloud for Azure Functions
-### Front-end
-- setup google app engine for deployment
+### **FOR EVERYONE**
+- Please read the current [requirements](docs/requirements.md) and add requirements in there for the project.
+### **FOR BACKEND TEAM**
+- Please read the [back-end document](docs/backendDraft.md) and modify or add anything in it if needed.
+### **FOR FRONTEND TEAM**
 
 ## Teams
 ### Front-end
