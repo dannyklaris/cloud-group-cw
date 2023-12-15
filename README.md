@@ -26,7 +26,7 @@ This is a group project that consists of 6 members. This project is focused on c
 - Please read the current [requirements](docs/requirements.md) and add requirements in there for the project.
 ### **FOR BACKEND TEAM**
 - Please read the [back-end document](docs/backendDraft.md) and modify or add anything in it if needed.
-- Complete the functions in the backend folder.
+- Open the README.md file in backend folder and complete the functions in the backend folder.
 ### **FOR FRONTEND TEAM**
 
 ## Teams
