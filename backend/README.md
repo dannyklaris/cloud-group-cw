@@ -13,6 +13,7 @@
 ```
 pip install -r requirements.txt
 ```
+- If you are not in the /backend directory, go to the /backend directory in your terminal. `cd backend`
 - Go to your terminal and activate the functions. `func start`
 
 ## To-do
