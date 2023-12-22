@@ -3,10 +3,10 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "python",
-    "AzureCosmosDBConnectionString": "",
-    "Database":"",
-    "PlayerContainer": "",
-    "QuestionContainer":"",
+    "AzureCosmosDBConnectionString": "AccountEndpoint=https://treehuggers2324-daka1g21-db.documents.azure.com:443/;AccountKey=ZhKpHzLGRSXgayxnda8MSeDxjS5UEWesiZRhiMXzoQMVkl3hHNiULGtXO8Jx0kd06xSmuvy90sMoACDbIWiw4g==;",
+    "Database":"quickmath",
+    "PlayerContainer": "player",
+    "QuestionContainer":"question",
     "DeploymentURL":"",
     "FunctionAppKey":""
   }
