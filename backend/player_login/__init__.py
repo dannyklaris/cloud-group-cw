@@ -1,24 +1,38 @@
 import logging
+import json
+from azure.functions import HttpRequest,HttpResponse
+import os
+from azure.cosmos import CosmosClient
+cosmos = CosmosClient.from_connection_string(os.environ['AzureCosmosDBConnectionString'])
+database = cosmos.get_database_client(os.environ['Database'])
+container = database.get_container_client(os.environ['PlayerContainer'])
 
-import azure.functions as func
 
 
-def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
-
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
+def main(req: HttpRequest) -> HttpResponse:
+        loginPlayer = req.get_json()
+        username = loginPlayer.get('username')
+        password = loginPlayer.get('password')
+        
+        logging.info('login player by parameter {}'.format(loginPlayer))
+        
+        playerlist = f"SELECT * FROM c WHERE c.username = '{username}'"
+        usernamelist = list(container.query_items(playerlist, enable_cross_partition_query=True))
+        
+        # If usernamelist is empty, it means that the entered username does not exist
+        if not usernamelist:
+            return HttpResponse(
+                body=json.dumps({"result": False, "msg": "Username or password incorrect"}),mimetype="application/json"
+            )
+            
+        # There will only be one person in the usernamelist, so there will only be one password. If the password does not match, it will prove that the login failed.
+        elif usernamelist[0]['password'] != password:
+            return HttpResponse(
+                body=json.dumps({"result": False, "msg": "Username or password incorrect"}),mimetype="application/json"
+            )
+        
+        # If both username and password are correct, then ok.
         else:
-            name = req_body.get('name')
-
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+            return HttpResponse(
+                body=json.dumps({"result": True, "msg": "OK"}),mimetype="application/json"
+            )
