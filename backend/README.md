@@ -17,11 +17,7 @@ pip install -r requirements.txt
 - Go to your terminal and activate the functions. `func start`
 
 ## To-do
-- setup for the CosmosDB
 - setup the Function App for deployment
-- complete player_register function file
-- complete player_login function file
-- complete question_create function file
 - complete question_delete function file
 - complete question_get function file
 - complete utils_leaderboard function file
