@@ -21,8 +21,11 @@ app.get('/display', (req, res) => {
   res.render('display');
 });
 
+let gameState = 0;
+
+
 // URL of the backend API
-const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:8181';
+const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:7071';
 
 //Start the server
 function startServer() {
@@ -32,24 +35,36 @@ function startServer() {
     });
 }
 
-//Chat message
-function handleChat(message) {
-    console.log('Handling chat: ' + message); 
-    io.emit('chat',message);
+function handleGuestLogin(socket) {
+  gameState = 1;
+  socket.emit('guest', gameState);
+}
+
+function handleEasy(socket) {
+  gameState = 2;
+  socket.emit('easy', gameState);
 }
 
 //Handle new connection
 io.on('connection', socket => { 
   console.log('New connection');
 
-  //Handle on chat message received
-  socket.on('chat', message => {
-    handleChat(message);
+  // Handle guest login
+  socket.on('guest', () => {
+    console.log('Guest login');
+    handleGuestLogin(socket);
+  });
+
+  // Handle easy difficulty
+  socket.on('easy', () => {
+    console.log('Easy difficulty');
+    handleEasy(socket);
   });
 
   //Handle disconnection
   socket.on('disconnect', () => {
     console.log('Dropped connection');
+    gameState = 0;
   });
 });
 

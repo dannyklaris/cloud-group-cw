@@ -2,8 +2,31 @@
 <html lang="en">
 
     <%- include('header'); -%>
+    
     <div id="game">
-        <%- include('landing'); -%>        
+        <div v-if="gameState.state == 0" style="background-image: url('/static/backgroundspace.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover;">
+            <%- include('landing'); -%>  
+        </div>
+        <div v-if="gameState.state == 1" style="background-image: url('/static/backgroundspace2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; height: 100vh;">
+            <%- include('difficulty'); -%>
+        </div>
+        <div v-if="gameState.state == 2" style="background-image: url('/static/backgroundspace2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; height: 100vh;">
+            <%- include('question'); -%>
+        </div>
+        
+              
     </div>
 
     <%- include('footer'); -%>

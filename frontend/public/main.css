@@ -1,9 +1,5 @@
-body {
-    background-image: url('/static/backgroundspace.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+.list-group-item:hover {
+    opacity: 0.75;
 }
 
 h1 {
