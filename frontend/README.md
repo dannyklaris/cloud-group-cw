@@ -12,7 +12,9 @@ Run
 npm start
 ```
 ## To-do
+- do the login and register button functionality
 - complete the question page with questions and answer section
+
 ## Bugs
 ## Completed
 - a landing page with login/register and play as guest button (still no functionality for the button yet)
