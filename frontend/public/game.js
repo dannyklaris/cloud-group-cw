@@ -8,7 +8,8 @@ var app = new Vue({
         gameState: {state:0},
         totalTime: 30,
         timeLeft: null,
-        timer: null
+        timer: null,
+        question: 1,
     },
     computed: {
         progressBarWidth() {
@@ -35,6 +36,7 @@ var app = new Vue({
                     alert('Time is up!');
                 }
             }, 1000);
+            this.gameState.state = 3;
         },
         register() {},
         login() {},

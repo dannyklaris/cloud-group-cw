@@ -6,5 +6,18 @@ h1 {
     font-family: 'Rubik Bubbles';
 }
 
+.card:hover {
+    cursor: pointer;
+}
 
 
+
+.card:active {
+    background-color: #eeff00; /* Change to the color you want */
+    transform: scale(0.95); /* Makes the card slightly smaller */
+    transition: transform 0.3s ease; /* Smooths the transition */
+  }
+
+.card.non-interactive {
+    pointer-events: none;
+}

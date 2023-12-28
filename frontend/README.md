@@ -12,13 +12,16 @@ Run
 npm start
 ```
 ## To-do
-- do the login and register button functionality
-- complete the question page with questions and answer section
+- login and register button functionality on `landing.ejs`
+- hint button functionality on `question.ejs`
+- medium and difficult functionality on `difficult.ejs`
 
 ## Bugs
 ## Completed
 - a landing page with login/register and play as guest button (still no functionality for the button yet)
 - guest button has will redirect user to the difficulty level without authentication
 - a difficulty menu where user can select the level
-- question page, only have timer for now
+- a start page where user will be told about the timer and the hint button
+- question page now have questions, answers and timer
+
 

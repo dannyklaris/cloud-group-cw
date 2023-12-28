@@ -23,6 +23,13 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
+        <%- include('start'); -%>
+        </div>
+        <div v-if="gameState.state == 3" style="background-image: url('/static/backgroundspace2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; height: 100vh;">
             <%- include('question'); -%>
         </div>
         
