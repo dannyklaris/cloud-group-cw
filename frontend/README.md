@@ -15,6 +15,7 @@ npm start
 - login and register button functionality on `landing.ejs`
 - hint button functionality on `question.ejs`
 - medium and difficult functionality on `difficult.ejs`
+- add a next question button functionality on `question.ejs` or after they selected their answer, user will be redirect to the next question
 
 ## Bugs
 ## Completed
