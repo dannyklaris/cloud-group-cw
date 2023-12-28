@@ -18,10 +18,10 @@ npm start
 
 ## Bugs
 ## Completed
-- a landing page with login/register and play as guest button (still no functionality for the button yet)
-- guest button has will redirect user to the difficulty level without authentication
-- a difficulty menu where user can select the level
-- a start page where user will be told about the timer and the hint button
-- question page now have questions, answers and timer
+- a landing page with login/register and play as guest button (still no functionality for the button yet) `landing.ejs`
+- guest button has will redirect user to the difficulty level without authentication `landing.ejs`
+- a difficulty menu where user can select the level `difficult.ejs`
+- a start page where user will be told about the timer and the hint button `start.ejs`
+- question page now have questions, answers and timer `question.ejs`
 
 
