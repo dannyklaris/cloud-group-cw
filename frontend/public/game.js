@@ -9,7 +9,12 @@ var app = new Vue({
         totalTime: 30,
         timeLeft: null,
         timer: null,
-        question: 1,
+        questionNumber: 1,
+        answer: 0,
+        question: 0,
+        questionArray: [],
+        questionCounter: 0,
+        correctAnswerTotal: 0,
     },
     computed: {
         progressBarWidth() {
@@ -33,13 +38,50 @@ var app = new Vue({
                     this.timeLeft--;
                 } else {
                     clearInterval(this.timer);
-                    alert('Time is up!');
                 }
             }, 1000);
             this.gameState.state = 3;
         },
         register() {},
         login() {},
+        nextQuestion(answer) {
+            if (this.questionCounter < this.questionArray.length - 1) {
+                this.questionCounter++;
+                this.questionNumber++;
+                answer == this.questionArray[this.questionCounter - 1].correctAnswer ? this.correctAnswerTotal++ : this.correctAnswerTotal;
+                // stop the timer
+                clearInterval(this.timer);
+                this.questionArray[this.questionCounter - 1].userAnswer = answer;
+            }
+            else {
+                answer == this.questionArray[this.questionCounter].correctAnswer ? this.correctAnswerTotal++ : this.correctAnswerTotal;
+                this.gameState.state = 4;
+            }
+        },
+        review() {
+            this.gameState.state = 5;
+            this.questionCounter = 0;
+            this.questionNumber = 1;
+        },
+
+        next() {
+            if (this.questionCounter < this.questionArray.length - 1) {
+                this.questionCounter++;
+                this.questionNumber++;
+            }
+            else {
+                alert("No more questions!");
+            }
+        },
+        previous() {
+            if (this.questionCounter > 0) {
+                this.questionCounter--;
+                this.questionNumber--;
+            }
+            else {
+                alert("No more previous questions!");
+            }
+        }
 
     }
 });
@@ -73,7 +115,8 @@ function connect() {
 
    // Handle easy difficulty
    socket.on('easy', function(data) {
-        app.gameState.state = data;
+        app.gameState.state = data.gameState;
+        app.questionArray = data.questions;
     });
 
 }

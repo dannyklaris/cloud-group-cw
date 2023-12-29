@@ -41,8 +41,42 @@ function handleGuestLogin(socket) {
 }
 
 function handleEasy(socket) {
+  const numQuestions = 10;
+  let questions = [];
+  for (let i = 0; i< numQuestions; i++) {
+    let num1 = Math.floor(Math.random() * 10) + 1;
+    let num2 = Math.floor(Math.random() * 10) + 1;
+
+    // correct answer
+    let correctAnswer = num1 + num2;
+
+    // generate three random other answers
+    let answers = [correctAnswer];
+    while (answers.length < 4) {
+      let randomAnswer = Math.floor(Math.random() * 20) + 1;
+      if (!answers.includes(randomAnswer)) {
+        answers.push(randomAnswer);
+      }
+    }
+
+    // shuffle answers
+    answers.sort(() => Math.random() - 0.5);
+
+    // create question
+    let question = `${num1} + ${num2} = ?`;
+    let questionObj = {
+      "question": question,
+      "answers": answers,
+      "correctAnswer": correctAnswer,
+      "difficulty": "easy",
+      "topic": "addition"
+    }
+    questions.push(questionObj);
+  }
   gameState = 2;
-  socket.emit('easy', gameState);
+  console.log("questions is: ");
+  console.log(questions);
+  socket.emit('easy', {questions: questions, gameState: gameState});
 }
 
 //Handle new connection

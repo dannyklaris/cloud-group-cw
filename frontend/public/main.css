@@ -10,8 +10,6 @@ h1 {
     cursor: pointer;
 }
 
-
-
 .card:active {
     background-color: #eeff00; /* Change to the color you want */
     transform: scale(0.95); /* Makes the card slightly smaller */

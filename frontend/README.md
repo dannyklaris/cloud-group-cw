@@ -15,7 +15,7 @@ npm start
 - login and register button functionality on `landing.ejs`
 - hint button functionality on `question.ejs`
 - medium and difficult functionality on `difficult.ejs`
-- add a next question button functionality on `question.ejs` or after they selected their answer, user will be redirect to the next question
+- for the `review.ejs` page, user can see the answer that they chose, and also the correct answer if they chosen the wrong answer
 
 ## Bugs
 ## Completed
@@ -24,5 +24,6 @@ npm start
 - a difficulty menu where user can select the level `difficult.ejs`
 - a start page where user will be told about the timer and the hint button `start.ejs`
 - question page now have questions, answers and timer `question.ejs`
-
+- created result page, where user will be shown the result of their answers `result.ejs`
+- created the review page, but still incomplete `review.ejs`
 

@@ -1,12 +1,4 @@
 <div class="container">
-    <!-- <div class="row">
-        <div class="col text-center">
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" :style="{ width: progressBarWidth + '%' }" style="background-color:yellow" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <button class="btn btn-primary mt-3" @click="startTimer">Start Timer</button>
-        </div>
-    </div> -->
     <div class="row">
         <div class="col mt-5">
             <i class="bi-alarm" style="font-size: 2rem; color:yellow"></i>
@@ -17,46 +9,46 @@
             
         </div>
     </div>
-    <h2 class="text-center mt-5" style="color:white; font-family: Archivo Black; font-size: 2.5rem" >Question {{question}}</h2>
+    <h2 class="text-center mt-5" style="color:white; font-family: Archivo Black; font-size: 2.5rem" >Question {{questionNumber}}</h2>
     <div class="row mt-5">
         <div class="col">
             <div class="card non-interactive">
                 <div class="card-text text-center" style="font-size: 3rem">
-                    1 + 1 = ?
+                    {{questionArray[questionCounter].question}}
                 </div>
             </div>
         </div>
     </div>
     <div class="row mt-5">
         <div class="col m-4 ">
-            <div class="card">
+            <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[0])">
                 <div class="card-text text-center p-5" style="font-size: 2.5rem">
-                    1
+                    {{questionArray[questionCounter].answers[0]}}
                 </div>
             </div>
             
         </div>
         <div class="col m-4">
-            <div class="card">
+            <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[1])">
                 <div class="card-text text-center p-5" style="font-size: 2.5rem">
-                    2
+                    {{questionArray[questionCounter].answers[1]}}
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col m-4">
-            <div class="card">
+            <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[2])">
                 <div class="card-text text-center p-5" style="font-size: 2.5rem">
-                    3
+                    {{questionArray[questionCounter].answers[2]}}
                 </div>
             </div>
             
         </div>
         <div class="col m-4">
-            <div class="card">
+            <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[3])">
                 <div class="card-text text-center p-5" style="font-size: 2.5rem">
-                    4
+                    {{questionArray[questionCounter].answers[3]}}
                 </div>
             </div>
         </div>
@@ -68,6 +60,6 @@
         </div>
         
     </div>
-    </div>
+    
 </div>
 

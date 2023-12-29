@@ -1,0 +1,23 @@
+<div class="container">
+
+    <div class="d-flex justify-content-center align-items-center" style="height: 100vh">
+        <div class="row">
+            <div class="col">
+                <img src="/static/astronaut.png" alt="astronaut" style="width: 100%">
+            </div>
+            <div class="col d-flex justify-content-center align-items-center flex-column">
+                <div class="card text-center non-interactive p-3 text-white" style="background-color:rgb(78, 78, 224)">
+                    <div class="card-text">
+                        <p style="font-family: Archivo Black; font-size:x-large">You got {{correctAnswerTotal}} out of 10 correct!
+                        </p>
+                    </div>
+                </div>
+                <button @click="review" class="btn btn-primary btn-warning p-3 mt-4">
+                    Review answers!
+                </button>
+            </div>
+        </div>
+        
+    </div>
+    
+</div>
