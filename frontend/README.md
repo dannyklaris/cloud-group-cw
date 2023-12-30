@@ -13,9 +13,9 @@ npm start
 ```
 ## To-do
 - login and register button functionality on `landing.ejs`
-- hint button functionality on `question.ejs`
+- hint button functionality on `question.ejs` (i want to implement an Azure OpenAI on this one)
 - medium and difficult functionality on `difficult.ejs`
-- for the `review.ejs` page, user can see the answer that they chose, and also the correct answer if they chosen the wrong answer
+- create by topic of the questions like addition or etc
 
 ## Bugs
 ## Completed
@@ -25,5 +25,5 @@ npm start
 - a start page where user will be told about the timer and the hint button `start.ejs`
 - question page now have questions, answers and timer `question.ejs`
 - created result page, where user will be shown the result of their answers `result.ejs`
-- created the review page, but still incomplete `review.ejs`
+- created the review page, now it shows red for wrong answers that the user chosen, and green answer for the correct answer
 

@@ -19,3 +19,15 @@ h1 {
 .card.non-interactive {
     pointer-events: none;
 }
+
+.correct {
+    background-color: green;
+  }
+  
+  .incorrect {
+    background-color: red;
+  }
+
+  .corrected {
+    background-color: rgb(120, 201, 0);
+  }

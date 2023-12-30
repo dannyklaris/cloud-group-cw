@@ -15,7 +15,7 @@
         </div>
         <div class="row mt-5">
             <div class="col m-4 ">
-                <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[0])">
+                <div class="card non-interactive" :class="{correct: isUserAnswer(questionArray[questionCounter].answers[0]) && isAnswered(), incorrect: isUserAnswer(questionArray[questionCounter].answers[0]) && !isAnswered(), corrected: questionArray[questionCounter].answers[0] == questionArray[questionCounter].correctAnswer }" @click="nextQuestion(questionArray[questionCounter].answers[0])">
                     <div class="card-text text-center p-5" style="font-size: 2.5rem">
                         {{questionArray[questionCounter].answers[0]}}
                     </div>
@@ -23,7 +23,7 @@
                 
             </div>
             <div class="col m-4">
-                <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[1])">
+                <div class="card non-interactive" :class="{correct: isUserAnswer(questionArray[questionCounter].answers[1]) && isAnswered(), incorrect: isUserAnswer(questionArray[questionCounter].answers[1]) && !isAnswered(), corrected: questionArray[questionCounter].answers[1] == questionArray[questionCounter].correctAnswer }" @click="nextQuestion(questionArray[questionCounter].answers[1])">
                     <div class="card-text text-center p-5" style="font-size: 2.5rem">
                         {{questionArray[questionCounter].answers[1]}}
                     </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="row">
             <div class="col m-4">
-                <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[2])">
+                <div class="card non-interactive" :class="{correct: isUserAnswer(questionArray[questionCounter].answers[2]) && isAnswered(), incorrect: isUserAnswer(questionArray[questionCounter].answers[2]) && !isAnswered(), corrected: questionArray[questionCounter].answers[2] == questionArray[questionCounter].correctAnswer }" @click="nextQuestion(questionArray[questionCounter].answers[2])">
                     <div class="card-text text-center p-5" style="font-size: 2.5rem">
                         {{questionArray[questionCounter].answers[2]}}
                     </div>
@@ -40,7 +40,7 @@
                 
             </div>
             <div class="col m-4">
-                <div class="card" @click="nextQuestion(questionArray[questionCounter].answers[3])">
+                <div class="card non-interactive" :class="{correct: isUserAnswer(questionArray[questionCounter].answers[3]) && isAnswered(), incorrect: isUserAnswer(questionArray[questionCounter].answers[3]) && !isAnswered(), corrected: questionArray[questionCounter].answers[3] == questionArray[questionCounter].correctAnswer }" @click="nextQuestion(questionArray[questionCounter].answers[3])">
                     <div class="card-text text-center p-5" style="font-size: 2.5rem">
                         {{questionArray[questionCounter].answers[3]}}
                     </div>
@@ -55,7 +55,17 @@
             <button @click="next" class="p-2 btn btn-primary">
                 Next
             </button>
+            
+        </div>
     </div>
+    <div class="row">
+        <div class="col d-flex justify-content-center">
+            <button @click="finish" class="p-3 btn btn-info">
+                Play again!
+            </button>
+        </div>
+    </div>
+
     
     
     </div>
