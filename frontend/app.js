@@ -35,6 +35,13 @@ function startServer() {
     });
 }
 
+// function getQuestionsBackend
+// .get()
+// set = 1
+// backend will send the questions from set 1 to the frontend
+// io.emit
+// everyone will get the questions from set 1
+
 function handleGuestLogin(socket) {
   gameState = 1;
   socket.emit('guest', gameState);
@@ -76,6 +83,9 @@ function handleEasy(socket) {
   gameState = 2;
   console.log("questions is: ");
   console.log(questions);
+
+  // send questions to the backend
+  // some function to send
   socket.emit('easy', {questions: questions, gameState: gameState});
 }
 

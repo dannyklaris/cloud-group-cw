@@ -18,9 +18,10 @@ pip install -r requirements.txt
 
 ## To-do
 - setup the Function App for deployment
-- complete question_delete function file
-- complete question_get function file
-- complete utils_leaderboard function file
+- complete question_get function file ()
+- complete utils_leaderboard function file ()
+
+
 - complete test file for player_register
 - complete test file for player_login
 - complete test file for question_create

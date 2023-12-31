@@ -12,10 +12,23 @@ Run
 npm start
 ```
 ## To-do
-- login and register button functionality on `landing.ejs`
-- hint button functionality on `question.ejs` (i want to implement an Azure OpenAI on this one)
-- medium and difficult functionality on `difficult.ejs`
-- create by topic of the questions like addition or etc
+- login and register button functionality on `landing.ejs` (Mufasa)
+
+- hint button functionality on `question.ejs` (i want to implement an Azure OpenAI on this one) (danial)
+    - integrate with azureOpenAI
+
+- medium and difficult functionality on `difficult.ejs` (Simran)
+    - medium can have combination of operations
+    - difficult will have fractions or decimals
+
+- create topic view that will show topic of the questions like addition or etc (WenShuo)
+
+- text-to-speech for the questions and answers, help users that cant read (Simran/Danial)
+
+- create a lobby view for players to join in (qianqian)
+    - all players will receive the same set of questions that is randomly generated
+    - at the end, players will be shown their ranking in the game
+    - this will increase competitiveness between students
 
 ## Bugs
 ## Completed

@@ -28,6 +28,7 @@ def main(req: HttpRequest) -> HttpResponse:
         return HttpResponse(body=json.dumps({"result": False, "msg": "Invalid topic"}), mimetype="application/json")
     
     question_item = {
+        "set": number,
         "question": question,
         "answer": answer,
         "difficulty": difficulty,
