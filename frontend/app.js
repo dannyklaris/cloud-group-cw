@@ -1,39 +1,46 @@
 'use strict';
 
-//Set up express
+// imports
 const express = require('express');
+const https = require('http');
+const socketIO = require('socket.io');
+const axios = require('axios');
+
+// URL of the backend API
+const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:7071';
+const questionsGetURL = BACKEND_ENDPOINT + '/question/get'
+
+let gameState = 0;
+
+// set up express
 const app = express();
 
-//Setup socket.io
-const server = require('http').Server(app);
-const io = require('socket.io')(server);
+// setup socket.io
+const server = https.Server(app);
+const io = socketIO(server);
 
-//Setup static page handling
+// setup static page handling
 app.set('view engine', 'ejs');
 app.use('/static', express.static('public'));
 
-//Handle client interface on /
+// handle client interface on /
 app.get('/', (req, res) => {
   res.render('client');
 });
-//Handle display interface on /display
+// handle display interface on /display
 app.get('/display', (req, res) => {
   res.render('display');
 });
 
-let gameState = 0;
 
-
-// URL of the backend API
-const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:7071';
-
-//Start the server
+// start the server
 function startServer() {
     const PORT = process.env.PORT || 8080;
     server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`);
     });
 }
+
 
 // function getQuestionsBackend
 // .get()
@@ -42,51 +49,29 @@ function startServer() {
 // io.emit
 // everyone will get the questions from set 1
 
+
 function handleGuestLogin(socket) {
   gameState = 1;
   socket.emit('guest', gameState);
 }
 
+
 function handleEasy(socket) {
-  const numQuestions = 10;
-  let questions = [];
-  for (let i = 0; i< numQuestions; i++) {
-    let num1 = Math.floor(Math.random() * 10) + 1;
-    let num2 = Math.floor(Math.random() * 10) + 1;
 
-    // correct answer
-    let correctAnswer = num1 + num2;
+  // get generated questions from API
+  axios.get(questionsGetURL)
+    .then(response => {
+      let questions = response.data;
 
-    // generate three random other answers
-    let answers = [correctAnswer];
-    while (answers.length < 4) {
-      let randomAnswer = Math.floor(Math.random() * 20) + 1;
-      if (!answers.includes(randomAnswer)) {
-        answers.push(randomAnswer);
-      }
-    }
+      gameState = 2;
+      console.log("questions is: ");
+      console.log(questions);
 
-    // shuffle answers
-    answers.sort(() => Math.random() - 0.5);
+      // send questions to the backend
+      // some function to send
+      socket.emit('easy', {questions: questions, gameState: gameState});
+    });
 
-    // create question
-    let question = `${num1} + ${num2} = ?`;
-    let questionObj = {
-      "question": question,
-      "answers": answers,
-      "correctAnswer": correctAnswer,
-      "difficulty": "easy",
-      "topic": "addition"
-    }
-    questions.push(questionObj);
-  }
-  gameState = 2;
-  console.log("questions is: ");
-  console.log(questions);
-
-  // send questions to the backend
-  // some function to send
-  socket.emit('easy', {questions: questions, gameState: gameState});
 }
 
 //Handle new connection
