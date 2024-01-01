@@ -1,24 +1,49 @@
 import logging
-
+import math
+import random
+import json
 import azure.functions as func
 
 
+NUM_OF_QUESTIONS = 10
+NUM_OF_ANSWERS = 4
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
-    logging.info('Python HTTP trigger function processed a request.')
+    """Generate questions for a user"""
 
-    name = req.params.get('name')
-    if not name:
-        try:
-            req_body = req.get_json()
-        except ValueError:
-            pass
-        else:
-            name = req_body.get('name')
+    # Log request
+    questionRequest = req.get_body()
+    logging.info(f'Question get request = {questionRequest}')
 
-    if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-    else:
-        return func.HttpResponse(
-             "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-             status_code=200
-        )
+    questions = []
+    for _ in range(NUM_OF_QUESTIONS):
+        num1 = random.randint(1, 10)
+        num2 = random.randint(1, 10)
+
+        # add correct answer as one of the question answers
+        correctAnswer = num1 + num2
+        answers = [correctAnswer]
+
+        # generate three random other answers
+        while len(answers) < NUM_OF_ANSWERS:
+            randomAnswer = random.randint(1, 20)
+            if (randomAnswer not in answers):
+                answers.append(randomAnswer)
+
+        # correct answer is not always the first answer
+        random.shuffle(answers)
+
+        # create question
+        questionText = f'{num1} + {num2} = ?'
+        question = {
+            'question': questionText,
+            'answers': answers,
+            'correctAnswer': correctAnswer,
+            'difficulty': 'easy',
+            'topic': 'addition'
+        }
+        questions.append(question)
+
+    return func.HttpResponse(
+        body=json.dumps(questions),mimetype="application/json"
+    )
