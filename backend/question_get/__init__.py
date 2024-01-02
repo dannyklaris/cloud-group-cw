@@ -16,13 +16,13 @@ def newAdditionQuestion(difficulty):
     if difficulty == 'easy':
         numLowerBound = 0
         numUpperBound = 10
-        answerLowerBound = 0
-        answerUpperBound = 20
+        answerLowerBound = numLowerBound + numLowerBound
+        answerUpperBound = numUpperBound + numUpperBound
     elif difficulty == 'hard':
         numLowerBound = 20
         numUpperBound = 50
-        answerLowerBound = 40
-        answerUpperBound = 100
+        answerLowerBound = numLowerBound + numLowerBound
+        answerUpperBound = numUpperBound + numUpperBound
     else:
         return {}
 
