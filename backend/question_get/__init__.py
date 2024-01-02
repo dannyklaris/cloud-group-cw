@@ -56,12 +56,31 @@ def newAdditionQuestion(difficulty):
     return question
 
 
-def newSubtractionQuestion():
+def newSubtractionQuestion(difficulty):
     """Generate and return a single subtraction question"""
 
+    # difficulty decides what numbers to use in the question
+    if difficulty == 'easy':
+        numLowerBound = 0
+        numUpperBound = 20
+        answerLowerBound = 0
+        answerUpperBound = numUpperBound - numLowerBound
+    elif difficulty == 'hard':
+        numLowerBound = 20
+        numUpperBound = 50
+        answerLowerBound = numLowerBound - numUpperBound
+        answerUpperBound = numUpperBound - numLowerBound
+    else:
+        return {}
+
     # generate numbers to use in question
-    num1 = random.randint(0, 20)
-    num2 = random.randint(0, num1)  # answer can only be positive
+    num1 = random.randint(numLowerBound, numUpperBound)
+    if difficulty == 'easy':
+        # answer can only be positive
+        num2 = random.randint(numLowerBound, num1)
+    else:
+        # answer can be negative
+        num2 = random.randint(numLowerBound, numUpperBound)
 
     # add correct answer as one of the question answers
     correctAnswer = num1 - num2
@@ -69,7 +88,7 @@ def newSubtractionQuestion():
 
     # generate three random other answers
     while len(answers) < NUM_OF_ANSWERS:
-        randomAnswer = random.randint(0, 20)
+        randomAnswer = random.randint(answerLowerBound, answerUpperBound)
         if (randomAnswer not in answers):
             answers.append(randomAnswer)
 
@@ -82,7 +101,7 @@ def newSubtractionQuestion():
         'question': questionText,
         'answers': answers,
         'correctAnswer': correctAnswer,
-        'difficulty': 'easy',
+        'difficulty': difficulty,
         'topic': 'subtraction'
     }
 
@@ -172,7 +191,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         if topic == 'addition':
             questions.append(newAdditionQuestion(difficulty))
         elif topic == 'subtraction':
-            questions.append(newSubtractionQuestion())
+            questions.append(newSubtractionQuestion(difficulty))
         elif topic == 'multiplication':
             questions.append(newMultiplicationQuestion())
         elif topic == 'division':
