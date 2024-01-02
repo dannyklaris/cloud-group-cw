@@ -18,6 +18,11 @@ def newAdditionQuestion(difficulty):
         numUpperBound = 10
         answerLowerBound = numLowerBound + numLowerBound
         answerUpperBound = numUpperBound + numUpperBound
+    elif difficulty == 'medium':
+        numLowerBound = 5
+        numUpperBound = 15
+        answerLowerBound = numLowerBound + numLowerBound
+        answerUpperBound = numUpperBound + numUpperBound
     elif difficulty == 'hard':
         numLowerBound = 20
         numUpperBound = 50
@@ -64,6 +69,11 @@ def newSubtractionQuestion(difficulty):
         numLowerBound = 0
         numUpperBound = 20
         answerLowerBound = 0
+        answerUpperBound = numUpperBound - numLowerBound
+    elif difficulty == 'medium':
+        numLowerBound = 0
+        numUpperBound = 20
+        answerLowerBound = numLowerBound - numUpperBound
         answerUpperBound = numUpperBound - numLowerBound
     elif difficulty == 'hard':
         numLowerBound = 20
@@ -117,6 +127,11 @@ def newMultiplicationQuestion(difficulty):
         num2options = [0, 1, 2, 4, 10]
         answerLowerBound = min(num1options) * min(num2options)
         answerUpperBound = max(num1options) * max(num2options)
+    elif difficulty == 'medium':
+        num1options = [3, 4, 5, 6, 7, 8]
+        num2options = [3, 5, 6, 8]
+        answerLowerBound = min(num1options) * min(num2options)
+        answerUpperBound = max(num1options) * max(num2options)
     elif difficulty == 'hard':
         num1options = [5, 6, 7, 8, 9, 10, 11, 12]
         num2options = [7, 9, 11, 12]
@@ -162,6 +177,9 @@ def newDivisionQuestion(difficulty):
     if difficulty == 'easy':
         correctAnswerOptions = [0, 1, 2, 3, 4, 5]
         num2options = [1, 2, 4, 10]
+    elif difficulty == 'medium':
+        correctAnswerOptions = [6, 7, 8, 9, 10, 11, 12]
+        num2options = [3, 5]
     elif difficulty == 'hard':
         correctAnswerOptions = [6, 7, 8, 9, 11, 12]
         num2options = [6, 7, 8, 9, 11, 12]
