@@ -59,6 +59,9 @@ def newSubtractionQuestion():
         if (randomAnswer not in answers):
             answers.append(randomAnswer)
 
+    # ensure correct answer is not always the first answer
+    random.shuffle(answers)
+
     # create question
     questionText = f'{num1} - {num2} = ?'
     question = {
