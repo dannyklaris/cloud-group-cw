@@ -42,6 +42,36 @@ def newAdditionQuestion():
     return question
 
 
+def newSubtractionQuestion():
+    """Generate and return a single subtraction question"""
+
+    # generate numbers to use in question
+    num1 = random.randint(0, 20)
+    num2 = random.randint(0, num1)  # answer can only be positive
+
+    # add correct answer as one of the question answers
+    correctAnswer = num1 - num2
+    answers = [correctAnswer]
+
+    # generate three random other answers
+    while len(answers) < NUM_OF_ANSWERS:
+        randomAnswer = random.randint(0, 20)
+        if (randomAnswer not in answers):
+            answers.append(randomAnswer)
+
+    # create question
+    questionText = f'{num1} - {num2} = ?'
+    question = {
+        'question': questionText,
+        'answers': answers,
+        'correctAnswer': correctAnswer,
+        'difficulty': 'easy',
+        'topic': 'subtraction'
+    }
+
+    return question
+
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """Generate questions for a user"""
 
@@ -52,7 +82,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # generate questions
     questions = []
     for _ in range(NUM_OF_QUESTIONS):
-        questions.append(newAdditionQuestion())
+        questions.append(newSubtractionQuestion())
 
     # return questions
     return func.HttpResponse(
