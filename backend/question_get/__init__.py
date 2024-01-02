@@ -148,10 +148,20 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     questionRequest = req.get_body()
     logging.info(f'Question get request = {questionRequest}')
 
+    topics = ['addition', 'subtraction', 'multiplication', 'division']
+
     # generate questions
     questions = []
     for _ in range(NUM_OF_QUESTIONS):
-        questions.append(newDivisionQuestion())
+        topic = random.choice(topics)
+        if topic == 'addition':
+            questions.append(newAdditionQuestion())
+        elif topic == 'subtraction':
+            questions.append(newSubtractionQuestion())
+        elif topic == 'multiplication':
+            questions.append(newMultiplicationQuestion())
+        elif topic == 'division':
+            questions.append(newDivisionQuestion())
 
     # return questions
     return func.HttpResponse(
