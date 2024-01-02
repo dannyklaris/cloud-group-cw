@@ -17,10 +17,6 @@ npm start
 - hint button functionality on `question.ejs` (i want to implement an Azure OpenAI on this one) (danial)
     - integrate with azureOpenAI
 
-- medium and difficult functionality on `difficult.ejs` (Simran)
-    - medium can have combination of operations
-    - difficult will have fractions or decimals
-
 - create topic view that will show topic of the questions like addition or etc (WenShuo)
 
 - text-to-speech for the questions and answers, help users that cant read (Simran/Danial)
@@ -39,4 +35,5 @@ npm start
 - question page now have questions, answers and timer `question.ejs`
 - created result page, where user will be shown the result of their answers `result.ejs`
 - created the review page, now it shows red for wrong answers that the user chosen, and green answer for the correct answer
+- medium and difficult functionality on `difficult.ejs`
 
