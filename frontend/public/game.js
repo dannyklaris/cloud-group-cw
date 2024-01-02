@@ -151,4 +151,9 @@ function connect() {
         app.questionArray = data.questions;
     });
 
+    // Handle request to update game state
+    socket.on('updateGameState', (gameState) => {
+        app.gameState.state = gameState;
+    });
+
 }

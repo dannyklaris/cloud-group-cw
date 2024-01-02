@@ -52,12 +52,14 @@ function startServer() {
 
 function handleGuestLogin(socket) {
   gameState = 1;
-  socket.emit('guest', gameState);
+  socket.emit('updateGameState', gameState);
 }
 
 
 function handleEasy(socket) {
+  // update gamestate
   gameState = 2;
+  socket.emit('updateGameState', gameState);
 
   // get generated questions from API
   axios.get(questionsGetURL)
