@@ -108,12 +108,26 @@ def newSubtractionQuestion(difficulty):
     return question
 
 
-def newMultiplicationQuestion():
+def newMultiplicationQuestion(difficulty):
     """Generate and return a single multiplication question"""
 
+    # difficulty decides what numbers to use in the question
+    if difficulty == 'easy':
+        num1options = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        num2options = [0, 1, 2, 4, 10]
+        answerLowerBound = min(num1options) * min(num2options)
+        answerUpperBound = max(num1options) * max(num2options)
+    elif difficulty == 'hard':
+        num1options = [5, 6, 7, 8, 9, 10, 11, 12]
+        num2options = [7, 9, 11, 12]
+        answerLowerBound = min(num1options) * min(num2options)
+        answerUpperBound = max(num1options) * max(num2options)
+    else:
+        return {}
+
     # generate numbers to use in question
-    num1 = random.randint(0, 12)
-    num2 = random.choice([0, 1, 2, 4, 10])
+    num1 = random.choice(num1options)
+    num2 = random.choice(num2options)
 
     # add correct answer as one of the question answers
     correctAnswer = num1 * num2
@@ -121,7 +135,7 @@ def newMultiplicationQuestion():
 
     # generate three random other answers
     while len(answers) < NUM_OF_ANSWERS:
-        randomAnswer = random.randint(0, 120)
+        randomAnswer = random.randint(answerLowerBound, answerUpperBound)
         if (randomAnswer not in answers):
             answers.append(randomAnswer)
 
@@ -134,7 +148,7 @@ def newMultiplicationQuestion():
         'question': questionText,
         'answers': answers,
         'correctAnswer': correctAnswer,
-        'difficulty': 'easy',
+        'difficulty': difficulty,
         'topic': 'multiplication'
     }
 
@@ -193,7 +207,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         elif topic == 'subtraction':
             questions.append(newSubtractionQuestion(difficulty))
         elif topic == 'multiplication':
-            questions.append(newMultiplicationQuestion())
+            questions.append(newMultiplicationQuestion(difficulty))
         elif topic == 'division':
             questions.append(newDivisionQuestion())
 
