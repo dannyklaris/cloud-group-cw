@@ -108,6 +108,39 @@ def newMultiplicationQuestion():
     return question
 
 
+def newDivisionQuestion():
+    """Generate and return a single division question"""
+
+    # generate numbers to use in question
+    num2 = random.choice([1,2,3,10])
+    correctAnswer = random.randint(0, 12)
+    num1 = num2 * correctAnswer
+
+    # add correct answer as one of the question answers
+    answers = [correctAnswer]
+
+    # generate three random other answers
+    while len(answers) < NUM_OF_ANSWERS:
+        randomAnswer = random.randint(0, 12)
+        if (randomAnswer not in answers):
+            answers.append(randomAnswer)
+
+    # ensure correct answer is not always the first answer
+    random.shuffle(answers)
+
+    # create question
+    questionText = f'{num1} \u00F7 {num2} = ?'
+    question = {
+        'question': questionText,
+        'answers': answers,
+        'correctAnswer': correctAnswer,
+        'difficulty': 'easy',
+        'topic': 'division'
+    }
+
+    return question
+
+
 def main(req: func.HttpRequest) -> func.HttpResponse:
     """Generate questions for a user"""
 
@@ -118,7 +151,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     # generate questions
     questions = []
     for _ in range(NUM_OF_QUESTIONS):
-        questions.append(newMultiplicationQuestion())
+        questions.append(newDivisionQuestion())
 
     # return questions
     return func.HttpResponse(
