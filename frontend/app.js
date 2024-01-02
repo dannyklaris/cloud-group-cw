@@ -57,13 +57,13 @@ function handleGuestLogin(socket) {
 
 
 function handleEasy(socket) {
+  gameState = 2;
 
   // get generated questions from API
   axios.get(questionsGetURL)
     .then(response => {
       let questions = response.data;
 
-      gameState = 2;
       console.log("questions is: ");
       console.log(questions);
 
