@@ -155,12 +155,22 @@ def newMultiplicationQuestion(difficulty):
     return question
 
 
-def newDivisionQuestion():
+def newDivisionQuestion(difficulty):
     """Generate and return a single division question"""
 
+    # difficulty decides what numbers to use in the question
+    if difficulty == 'easy':
+        correctAnswerOptions = [0, 1, 2, 3, 4, 5]
+        num2options = [1, 2, 4, 10]
+    elif difficulty == 'hard':
+        correctAnswerOptions = [6, 7, 8, 9, 11, 12]
+        num2options = [6, 7, 8, 9, 11, 12]
+    else:
+        return {}
+
     # generate numbers to use in question
-    num2 = random.choice([1,2,3,10])
-    correctAnswer = random.randint(0, 12)
+    num2 = random.choice(num2options)
+    correctAnswer = random.choice(correctAnswerOptions)
     num1 = num2 * correctAnswer
 
     # add correct answer as one of the question answers
@@ -168,7 +178,7 @@ def newDivisionQuestion():
 
     # generate three random other answers
     while len(answers) < NUM_OF_ANSWERS:
-        randomAnswer = random.randint(0, 12)
+        randomAnswer = random.choice(correctAnswerOptions)
         if (randomAnswer not in answers):
             answers.append(randomAnswer)
 
@@ -181,7 +191,7 @@ def newDivisionQuestion():
         'question': questionText,
         'answers': answers,
         'correctAnswer': correctAnswer,
-        'difficulty': 'easy',
+        'difficulty': difficulty,
         'topic': 'division'
     }
 
@@ -209,7 +219,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         elif topic == 'multiplication':
             questions.append(newMultiplicationQuestion(difficulty))
         elif topic == 'division':
-            questions.append(newDivisionQuestion())
+            questions.append(newDivisionQuestion(difficulty))
 
     # return questions
     return func.HttpResponse(
