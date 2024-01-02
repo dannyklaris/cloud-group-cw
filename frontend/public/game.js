@@ -43,8 +43,8 @@ var app = new Vue({
         guest() {
             socket.emit('guest');
         },
-        easy() {
-            socket.emit('easy');
+        setDifficulty(difficulty) {
+            socket.emit('setDifficulty', difficulty);
         },
         startTimer() {
             this.timeLeft = this.totalTime;
@@ -140,15 +140,9 @@ function connect() {
         app.gameState.state = 0;
     });
 
-    // Handle guest login
-    socket.on('guest', function(data) {
-        app.gameState.state= data;
-    });
-
-   // Handle easy difficulty
-   socket.on('easy', function(data) {
-        app.gameState.state = data.gameState;
-        app.questionArray = data.questions;
+    // Handle quiz questions
+    socket.on('updateQuestions', (questions) => {
+        app.questionArray = questions;
     });
 
     // Handle request to update game state

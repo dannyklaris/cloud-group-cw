@@ -42,37 +42,34 @@ function startServer() {
 }
 
 
-// function getQuestionsBackend
-// .get()
-// set = 1
-// backend will send the questions from set 1 to the frontend
-// io.emit
-// everyone will get the questions from set 1
-
-
 function handleGuestLogin(socket) {
   gameState = 1;
   socket.emit('updateGameState', gameState);
 }
 
 
-function handleEasy(socket) {
+function handleDifficulty(socket, difficulty) {
+
   // update gamestate
   gameState = 2;
   socket.emit('updateGameState', gameState);
 
-  // get generated questions from API
-  axios.get(questionsGetURL)
-    .then(response => {
-      let questions = response.data;
+  axios.get(
 
-      console.log("questions is: ");
-      console.log(questions);
+    // get generated questions from API
+    questionsGetURL, {
+      data: {difficulty: difficulty},
+      headers: {'Content-Type': 'application/json'}
+    }
 
-      // send questions to the backend
-      // some function to send
-      socket.emit('easy', {questions: questions, gameState: gameState});
-    });
+  ).then(
+
+    // update the client once the questions have been received
+    response => {
+      socket.emit('updateQuestions', response.data);
+    }
+
+  );
 
 }
 
@@ -86,10 +83,10 @@ io.on('connection', socket => {
     handleGuestLogin(socket);
   });
 
-  // Handle easy difficulty
-  socket.on('easy', () => {
-    console.log('Easy difficulty');
-    handleEasy(socket);
+  // Handle difficulty selection
+  socket.on('setDifficulty', (difficulty) => {
+    console.log(`Difficulty selected: ${difficulty}`);
+    handleDifficulty(socket, difficulty);
   });
 
   //Handle disconnection

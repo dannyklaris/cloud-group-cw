@@ -202,10 +202,10 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     """Generate questions for a user"""
 
     # Log request
-    questionRequest = req.get_body()
-    logging.info(f'Question get request = {questionRequest}')
+    questionsRequest = req.get_json()
+    logging.info(f'Question get request = {questionsRequest}')
 
-    difficulty = 'easy'
+    difficulty = questionsRequest['difficulty']
     topics = ['addition', 'subtraction', 'multiplication', 'division']
 
     # generate questions
