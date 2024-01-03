@@ -15,6 +15,9 @@ var app = new Vue({
         questionArray: [],
         questionCounter: 0,
         correctAnswerTotal: 0,
+        username: '',
+        currentPlayer: { username: '', score: 0, number: 0},
+        players: [],
     },
     computed: {
         progressBarWidth() {
@@ -41,24 +44,24 @@ var app = new Vue({
             myModal.show();
           },
         guest() {
-            socket.emit('guest');
+            socket.emit('guest', this.username);
         },
         setDifficulty(difficulty) {
             socket.emit('setDifficulty', difficulty);
         },
         startTimer() {
-            this.timeLeft = this.totalTime;
-            this.timer = setInterval(() => {
-                if(this.timeLeft > 0) {
-                    this.timeLeft--;
-                } else {
-                    this.showModal();
-                    clearInterval(this.timer);
+            // this.timeLeft = this.totalTime;
+            // this.timer = setInterval(() => {
+            //     if(this.timeLeft > 0) {
+            //         this.timeLeft--;
+            //     } else {
+            //         this.showModal();
+            //         clearInterval(this.timer);
                     
 
-                }
-            }, 1000);
-            this.gameState.state = 3;
+            //     }
+            // }, 1000);
+            socket.emit('start', this.gameState.state);
         },
         register() {},
         login() {},
@@ -77,21 +80,21 @@ var app = new Vue({
             }
         },
         nextQuestion(answer) {
+            // Check the answer before incrementing the questionCounter
+            answer == this.questionArray[this.questionCounter].correctAnswer ? this.correctAnswerTotal++ : this.correctAnswerTotal;
+            this.questionArray[this.questionCounter].userAnswer = answer;
+        
             if (this.questionCounter < this.questionArray.length - 1) {
                 this.questionCounter++;
                 this.questionNumber++;
-                answer == this.questionArray[this.questionCounter - 1].correctAnswer ? this.correctAnswerTotal++ : this.correctAnswerTotal;
-                
-                this.questionArray[this.questionCounter - 1].userAnswer = answer;
             } 
             else {
-                answer == this.questionArray[this.questionCounter].correctAnswer ? this.correctAnswerTotal++ : this.correctAnswerTotal;
-                this.gameState.state = 4;
+                this.gameState.state = 5;
                 clearInterval(this.timer);
             }
         },
         review() {
-            this.gameState.state = 5;
+            this.gameState.state = 6;
             this.questionCounter = 0;
             this.questionNumber = 1;
         },
@@ -113,6 +116,12 @@ var app = new Vue({
             else {
                 alert("No more previous questions!");
             }
+        },
+        nextState() {
+            socket.emit('nextState', this.gameState.state);
+        },
+        leaderboard() {
+            this.gameState.state = 7;
         }
 
     }
@@ -141,13 +150,39 @@ function connect() {
     });
 
     // Handle quiz questions
-    socket.on('updateQuestions', (questions) => {
-        app.questionArray = questions;
+    socket.on('updateQuestions', (data) => {
+        app.questionArray = data.questions;
+        app.gameState.state = data.state;
     });
 
     // Handle request to update game state
-    socket.on('updateGameState', (gameState) => {
-        app.gameState.state = gameState;
+    // socket.on('updateGameState', (gameState) => {
+    //     app.gameState.state = gameState;
+    // });
+    // Handle updates to all players
+    socket.on('update', function(data) {
+        app.gameState.state = data.state;
+        app.currentPlayer = data.player;
+        app.players = data.players;
+    });
+
+    socket.on('nextState', function(data) {
+        app.gameState.state = data;
+    });
+
+    socket.on('start', function(data) {
+        app.gameState.state = data;
+        
+
+    });
+
+    socket.on('timer update', function(data) {
+        app.timeLeft = data;
+    });
+
+    socket.on('timer ended', function() {
+        app.showModal();
+        clearInterval(app.timer);
     });
 
 }

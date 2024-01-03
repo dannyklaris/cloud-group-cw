@@ -18,7 +18,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
-            <%- include('difficulty'); -%>
+            <%- include('lobby'); -%>
         </div>
 
         <div v-if="gameState.state == 2" style="background-image: url('/static/backgroundspace2.png');
@@ -26,7 +26,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
-        <%- include('start'); -%>
+            <%- include('difficulty'); -%>
         </div>
 
         <div v-if="gameState.state == 3" style="background-image: url('/static/backgroundspace2.png');
@@ -34,7 +34,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
-            <%- include('question'); -%>
+            <%- include('start'); -%>
         </div>
 
         
@@ -43,7 +43,7 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
-            <%- include('result'); -%>
+            <%- include('question'); -%>
         </div>
         
         <div v-if="gameState.state == 5" style="background-image: url('/static/backgroundspace2.png');
@@ -51,24 +51,24 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover; height: 100vh;">
+            <%- include('result'); -%>
+        </div>
+
+        <div v-if="gameState.state == 6" style="background-image: url('/static/backgroundspace2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; height: 100vh;">
             <%- include('review'); -%>
         </div>
 
-        
-
-        
-
-        
-
-
-        
-
-        
-
-        
-
-        
-        
+        <div v-if="gameState.state == 7" style="background-image: url('/static/backgroundspace2.png');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: cover; height: 100vh;">
+            <%- include('leaderboard'); -%>
+        </div>
         
     </div>
 

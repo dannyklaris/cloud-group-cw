@@ -40,19 +40,42 @@ function startServer() {
         console.log(`Server listening on port ${PORT}`);
     });
 }
+let players = new Map();
+let playersToSocket = new Map();
+let socketToPlayers = new Map();
+let playerNumber = 0;
+let totalTime = 30;
+let timeLeft = totalTime;
+let timer;
 
-
-function handleGuestLogin(socket) {
+function handleGuestLogin(socket, username) {
   gameState = 1;
-  socket.emit('updateGameState', gameState);
+  playerNumber++;
+  players.set(username, {username: username, score: 0, number: playerNumber});
+  playersToSocket.set(username, socket);
+  socketToPlayers.set(socket, username);
+  // socket.emit('guest', gameState);
+  updateAll();
 }
 
+function updatePlayer(socket) {
+  const playerName = socketToPlayers.get(socket);
+  const player = players.get(playerName);
+  const data = { state: gameState, player: player, players: Object.fromEntries(players) };
+  socket.emit('update', data);
+}
+
+function updateAll() {
+  console.log('Updating all players');
+  for (let [username, socket] of playersToSocket) {
+    updatePlayer(socket);
+  }
+}
 
 function handleDifficulty(socket, difficulty) {
 
   // update gamestate
-  gameState = 2;
-  socket.emit('updateGameState', gameState);
+  gameState = 3;
 
   axios.get(
 
@@ -66,7 +89,7 @@ function handleDifficulty(socket, difficulty) {
 
     // update the client once the questions have been received
     response => {
-      socket.emit('updateQuestions', response.data);
+      io.emit('updateQuestions', {questions: response.data, state: gameState} );
     }
 
   );
@@ -77,10 +100,11 @@ function handleDifficulty(socket, difficulty) {
 io.on('connection', socket => { 
   console.log('New connection');
 
+  
   // Handle guest login
-  socket.on('guest', () => {
-    console.log('Guest login');
-    handleGuestLogin(socket);
+  socket.on('guest', (username) => {
+    console.log('Guest login with username: ' + username);
+    handleGuestLogin(socket, username);
   });
 
   // Handle difficulty selection
@@ -94,6 +118,34 @@ io.on('connection', socket => {
     console.log('Dropped connection');
     gameState = 0;
   });
+
+  socket.on('nextState', (data) => {
+    gameState = data;
+    gameState++;
+    io.emit('nextState', gameState);
+  });
+
+  socket.on('start', function(data) {
+    gameState = data;
+    gameState++;
+    // Start the timer only if it's not already running
+    if (!timer) {
+        timeLeft = totalTime;
+        timer = setInterval(() => {
+            if(timeLeft > 0) {
+                timeLeft--;
+                // Emit the updated time to all connected sockets
+                io.sockets.emit('timer update', timeLeft);
+            } else {
+                clearInterval(timer);
+                timer = null; // Reset the timer
+                // You can emit a 'timer ended' event here if needed
+                io.sockets.emit('timer ended');
+            }
+        }, 1000);
+    }
+    io.emit('start', gameState);
+});
 });
 
 //Start server

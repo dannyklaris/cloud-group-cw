@@ -1,0 +1,14 @@
+<p class="text-center text-white">This is a lobby</p>
+<div class="row">
+    <div class="col">
+        <div v-for="player in players">
+            <p class="text-center text-white">{{player.username}}</p>
+        </div>
+        <div v-if="currentPlayer.number == 1">
+            <button class="btn btn-primary" @click="nextState">
+                Next
+            </button>
+        </div>
+        
+    </div>
+</div>

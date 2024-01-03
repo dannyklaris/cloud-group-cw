@@ -5,6 +5,7 @@
 - [To-do](#to-do)
 - [Bugs](#bugs)
 - [Completed](#completed)
+- [Updates](#updates)
 
 ## How to start?
 Run
@@ -36,4 +37,10 @@ npm start
 - created result page, where user will be shown the result of their answers `result.ejs`
 - created the review page, now it shows red for wrong answers that the user chosen, and green answer for the correct answer
 - medium and difficult functionality on `difficult.ejs`
+
+## Updates
+### 1.1
+- user can now have a username when play as a guest `landing.ejs`
+- other people can also join the lobby to play `lobby.ejs`
+- the first player can choose the difficulty level `difficulty.ejs`
 
