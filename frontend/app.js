@@ -9,6 +9,7 @@ const axios = require('axios');
 // URL of the backend API
 const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:7071';
 const questionsGetURL = BACKEND_ENDPOINT + '/question/get'
+const hintGetURL = BACKEND_ENDPOINT + '/hint/get'
 
 let gameState = 0;
 
@@ -51,7 +52,7 @@ let timer;
 function handleGuestLogin(socket, username) {
   gameState = 1;
   playerNumber++;
-  players.set(username, {username: username, score: 0, number: playerNumber});
+  players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber});
   playersToSocket.set(username, socket);
   socketToPlayers.set(socket, username);
   // socket.emit('guest', gameState);
@@ -94,6 +95,19 @@ function handleDifficulty(socket, difficulty) {
 
   );
 
+}
+
+function handleHint(socket, question) {
+  axios.get(
+    hintGetURL, {
+      data: {question: question},
+      headers: {'Content-Type': 'application/json'}
+    }
+  ).then(
+    response => {
+      socket.emit('hint', response.data);
+    }
+  )
 }
 
 //Handle new connection
@@ -166,7 +180,13 @@ io.on('connection', socket => {
             }
         }, 1000);
     }
-});
+  });
+
+  socket.on('hint', (question) => {
+    console.log('Hint is called');
+    handleHint(socket, question);
+  });
+
 });
 
 //Start server

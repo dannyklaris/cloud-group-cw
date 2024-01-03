@@ -18,6 +18,7 @@ var app = new Vue({
         username: '',
         currentPlayer: { username: '', score: 0, number: 0},
         players: [],
+        hintMessage: '',
     },
     computed: {
         progressBarWidth() {
@@ -28,6 +29,9 @@ var app = new Vue({
         connect();
     },
     methods: {
+        hint(question) {
+            socket.emit('hint', question);
+        },
         restartQuestions() {
             // start at question 1 again
             this.questionCounter = 0;
@@ -48,6 +52,10 @@ var app = new Vue({
             var myModal = new bootstrap.Modal(this.$refs.myModal);
             myModal.show();
           },
+        showHint: function() {
+            var myHint = new bootstrap.Modal(this.$refs.myHint);
+            myHint.show();
+        },
         guest() {
             socket.emit('guest', this.username);
         },
@@ -188,6 +196,11 @@ function connect() {
     socket.on('timer ended', function() {
         app.showModal();
         clearInterval(app.timer);
+    });
+
+    socket.on('hint', function(data) {
+        app.hintMessage = data;
+        app.showHint();
     });
 
 }
