@@ -146,6 +146,27 @@ io.on('connection', socket => {
     }
     io.emit('start', gameState);
 });
+
+
+
+  socket.on('restartQuestions', () => {
+    // start the timer again
+    if (!timer) {
+        timeLeft = totalTime;
+        timer = setInterval(() => {
+            if(timeLeft > 0) {
+                timeLeft--;
+                // Emit the updated time to all connected sockets that haven't won
+                io.sockets.emit('timer update', timeLeft);
+            } else {
+                clearInterval(timer);
+                timer = null; // Reset the timer
+                // You can emit a 'timer ended' event here if needed
+                io.sockets.emit('timer ended');
+            }
+        }, 1000);
+    }
+});
 });
 
 //Start server

@@ -28,8 +28,13 @@ var app = new Vue({
         connect();
     },
     methods: {
-        restart() {
-            this.gameState.state = 2;
+        restartQuestions() {
+            // start at question 1 again
+            this.questionCounter = 0;
+            this.questionNumber = 1;
+            this.correctAnswerTotal = 0;
+            // restart timer
+            socket.emit('restartQuestions');
         },
         finish() {
             this.gameState.state = 1;
