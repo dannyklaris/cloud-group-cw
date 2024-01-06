@@ -19,6 +19,8 @@ var app = new Vue({
         currentPlayer: { username: '', score: 0, number: 0},
         players: [],
         hintMessage: '',
+        isHost: false,
+        roomUserList: []
     },
     computed: {
         progressBarWidth() {
@@ -135,7 +137,11 @@ var app = new Vue({
         },
         leaderboard() {
             this.gameState.state = 7;
+        },
+        exit() {
+            socket.emit('exit', { gameState: 0 }); //back to "landing" page
         }
+
 
     }
 });
@@ -202,5 +208,19 @@ function connect() {
         app.hintMessage = data;
         app.showHint();
     });
+
+    socket.on('exit', function() {
+        app.gameState.state = 0;
+    });
+
+    socket.on('userJoinRoom', (user) => {
+        this.roomUserList.push(user);
+    });
+
+    socket.on('userExitRoom', (data) => {
+        this.roomUserList = this.roomUserList.filter((user) => user.id !== userId);
+        // update host state..
+    });
+      
 
 }

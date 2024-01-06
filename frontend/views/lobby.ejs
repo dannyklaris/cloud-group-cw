@@ -1,4 +1,4 @@
-<p class="text-center text-white">This is a lobby</p>
+<!-- <p class="text-center text-white">This is a lobby</p>
 <div class="row">
     <div class="col">
         <div v-for="player in players">
@@ -10,5 +10,33 @@
             </button>
         </div>
         
+    </div>
+</div> -->
+
+<div class="container">
+    <h1 class="p-5 text-center text-white">Lobby</h1>
+
+    <!-- if the user is the host -->
+    <div v-if="currentPlayer.number == 1">
+        <!-- exit and start -->
+        <button class="btn btn-primary" style="position: absolute; bottom: 0; left: 0;" @click="exit">Exit</button>
+        <button class="btn btn-success" style="position: absolute; bottom: 0; right: 0;" @click="nextState">Start</button>
+    </div>
+
+    <!-- if not host -->
+    <div v-else>
+        <!-- only exit -->
+        <button class="btn btn-primary" style="position: absolute; bottom: 0; left: 0;" @click="exit">Exit</button>
+        <!-- <button class="btn btn-success" style="position: absolute; bottom: 0; right: 0;" @click="nextState">Start</button> -->
+    </div>
+
+    <!-- display users in the room -->
+    <!-- <div class="room-user-list">
+        <div v-for="roomUser in roomUserList" :key="roomUser.id" class="room-user-item">
+          {{ roomUser.username }}
+        </div>
+    </div> -->
+    <div v-for="player in players">
+        <p class="text-center text-white">{{player.username}}</p>
     </div>
 </div>

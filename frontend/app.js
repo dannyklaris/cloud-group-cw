@@ -159,7 +159,7 @@ io.on('connection', socket => {
         }, 1000);
     }
     io.emit('start', gameState);
-});
+  });
 
 
 
@@ -186,6 +186,21 @@ io.on('connection', socket => {
     console.log('Hint is called');
     handleHint(socket, question);
   });
+
+  socket.on('exit', (data) => {
+    gameState = data.gameState; 
+    io.emit('exit'); 
+  });
+
+  // socket.on('userJoinRoom', (user) => {
+  //   socket.broadcast.emit('userJoined', user);
+  // });
+
+  // socket.on('userExitRoom', () => {
+  //   const userId = socket.id;
+  //   socket.broadcast.emit('userLeft', userId);
+  //   // handle host exit and update host logic...
+  // });
 
 });
 
