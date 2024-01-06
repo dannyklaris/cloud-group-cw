@@ -52,7 +52,13 @@ let timer;
 function handleGuestLogin(socket, username) {
   gameState = 1;
   playerNumber++;
-  players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber});
+  if (playerNumber === 1) {
+    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: true});
+  }
+  else {
+    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: false});
+  }
+  
   playersToSocket.set(username, socket);
   socketToPlayers.set(socket, username);
   // socket.emit('guest', gameState);
@@ -108,6 +114,34 @@ function handleHint(socket, question) {
       socket.emit('hint', response.data);
     }
   )
+}
+
+function playerExit(socket, player) {
+  // get only the first string, not the guest
+  let username = player.username.split(' ')[0];
+  players.delete(username);
+  playersToSocket.delete(username);
+  socketToPlayers.delete(socket);
+
+  if (player.isHost) {
+    if (players.size > 0) {
+      // Get the first key in the map
+      const firstKey = players.keys().next().value;
+
+      // Get the player object associated with the first key
+      const firstPlayer = players.get(firstKey);
+
+      // Set isHost to true for the first player
+      firstPlayer.isHost = true;
+
+      // Update the map with the new player object
+      players.set(firstKey, firstPlayer);
+  }
+  }
+  console.log('players sent:')
+  console.log(players);
+  socket.emit('exit', players);
+  updateAll();
 }
 
 //Handle new connection
@@ -188,8 +222,8 @@ io.on('connection', socket => {
   });
 
   socket.on('exit', (data) => {
-    gameState = data.gameState; 
-    io.emit('exit'); 
+    console.log('Player exit the lobby');
+    playerExit(socket, data.player);
   });
 
   // socket.on('userJoinRoom', (user) => {

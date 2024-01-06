@@ -138,8 +138,8 @@ var app = new Vue({
         leaderboard() {
             this.gameState.state = 7;
         },
-        exit() {
-            socket.emit('exit', { gameState: 0 }); //back to "landing" page
+        exit(player) {
+            socket.emit('exit', { gameState: 0, player: player }); //back to "landing" page
         }
 
 
@@ -209,8 +209,9 @@ function connect() {
         app.showHint();
     });
 
-    socket.on('exit', function() {
+    socket.on('exit', function(data) {
         app.gameState.state = 0;
+        app.players = data;
     });
 
     socket.on('userJoinRoom', (user) => {

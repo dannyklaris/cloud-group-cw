@@ -1,34 +1,8 @@
-<!-- <p class="text-center text-white">This is a lobby</p>
-<div class="row">
-    <div class="col">
-        <div v-for="player in players">
-            <p class="text-center text-white">{{player.username}}</p>
-        </div>
-        <div v-if="currentPlayer.number == 1">
-            <button class="btn btn-primary" @click="nextState">
-                Next
-            </button>
-        </div>
-        
-    </div>
-</div> -->
-
 <div class="container">
     <h1 class="p-5 text-center text-white">Lobby</h1>
 
     <!-- if the user is the host -->
-    <div v-if="currentPlayer.number == 1">
-        <!-- exit and start -->
-        <button class="btn btn-primary" style="position: absolute; bottom: 0; left: 0;" @click="exit">Exit</button>
-        <button class="btn btn-success" style="position: absolute; bottom: 0; right: 0;" @click="nextState">Start</button>
-    </div>
-
-    <!-- if not host -->
-    <div v-else>
-        <!-- only exit -->
-        <button class="btn btn-primary" style="position: absolute; bottom: 0; left: 0;" @click="exit">Exit</button>
-        <!-- <button class="btn btn-success" style="position: absolute; bottom: 0; right: 0;" @click="nextState">Start</button> -->
-    </div>
+    
 
     <!-- display users in the room -->
     <!-- <div class="room-user-list">
@@ -36,7 +10,31 @@
           {{ roomUser.username }}
         </div>
     </div> -->
-    <div v-for="player in players">
-        <p class="text-center text-white">{{player.username}}</p>
+    <div class="d-flex justify-content-center align-items-center flex-row">
+        <div v-for="player in players">
+            <div class="bg-light rounded-3 border-3 me-4 p-2">
+                <div class="text-center">
+                    <h3>{{player.username}}</h3>
+                </div>
+            </div>
+        </div>
+        
     </div>
+
+    <!-- position of the buttons on center-->
+    <div class="d-flex justify-content-center align-items-center flex-column" style="height: 100vh">
+        <div v-if="currentPlayer.isHost">
+            <!-- exit and start -->
+            <button class="btn btn-primary me-3" @click="exit(currentPlayer)">Exit</button>
+            <button class="btn btn-success" @click="nextState">Start</button>
+        </div>
+    
+        <!-- if not host -->
+        <div v-else>
+            <!-- only exit -->
+            <button class="btn btn-primary" @click="exit">Exit</button>
+            <!-- <button class="btn btn-success" style="position: absolute; bottom: 0; right: 0;" @click="nextState">Start</button> -->
+        </div>
+    </div>
+    
 </div>

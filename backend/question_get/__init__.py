@@ -224,7 +224,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
     logging.info(f'Question get request = {questionsRequest}')
 
     difficulty = questionsRequest['difficulty']
-    topics = ['addition', 'subtraction', 'multiplication', 'division']
+    topics = ['addition']
 
     # generate questions
     questions = []
