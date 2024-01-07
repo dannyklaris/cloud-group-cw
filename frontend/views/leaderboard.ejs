@@ -1,1 +1,27 @@
-<p class="text-center text-white" style="font-size: 2rem">Leaderboard</p>
+<div class="container">
+    <h1 class="p-5 text-center text-white">Leaderboard</h1>
+    
+        <div v-for="(player) in sortedPlayers">
+            <div class="bg-light rounded-3 border-3 p-3 mt-3">
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col">
+                            {{ player.rank }}
+                        </div>
+                        <div class="col">
+                            {{ player.username }}
+                        </div>
+                        <div class="col">
+                            {{ player.score }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            
+        </div>
+        
+        
+    
+</div>

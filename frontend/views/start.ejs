@@ -9,20 +9,31 @@
                             <p>1) You need to answer the question before the <b>timer</b> runs out!</p>
                             <p>2) If you're stuck, click the <b class="text-warning">Hint</b> to find out how to answer the question!</p>
                             <p class="text-center">Best of luck students!</p>
+                            
                     
                 </div>
                 
             </div>
-        </div>
-        <div v-if="currentPlayer.number == 1">
-            <div class="row mt-5">
-                <button class="btn btn-primary p-3" @click="startTimer">Start!</button>
+
+            <div class="card non-interactive p-4 mt-3" style="background-color:rgba(1, 1, 61, 0.842)">
+                <div class="card-text text-white" style="font-family: Poppins">
+
+                    <div class="bg-success p-2 text-center mt-2">+30 points for every correct answer!</div> 
+                    <div class="bg-danger p-2 text-center mt-2">0 points for every wrong answer!</div>
+                    <div class="bg-warning p-2 text-center text-black mt-2">-10 points for every hints used!</div>
+
+                </div>
             </div>
-        </div>
+            <div v-if="currentPlayer.number == 1">
+                <div class="row mt-5">
+                    <button class="btn btn-primary p-3" @click="startTimer">Start!</button>
+                </div>
+            </div>
         
             
         
     
+        </div>
     </div>
     
     

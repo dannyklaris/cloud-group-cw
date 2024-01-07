@@ -11,7 +11,6 @@ const BACKEND_ENDPOINT = process.env.BACKEND || 'http://localhost:7071';
 const questionsGetURL = BACKEND_ENDPOINT + '/question/get'
 const hintGetURL = BACKEND_ENDPOINT + '/hint/get'
 
-let gameState = 0;
 
 // set up express
 const app = express();
@@ -48,15 +47,16 @@ let playerNumber = 0;
 let totalTime = 30;
 let timeLeft = totalTime;
 let timer;
+let gameState = 0;
 
 function handleGuestLogin(socket, username) {
   gameState = 1;
   playerNumber++;
   if (playerNumber === 1) {
-    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: true});
+    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: true, state: 0});
   }
   else {
-    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: false});
+    players.set(username, {username: username + ' (guest)', score: 0, number: playerNumber, isHost: false, state: 0});
   }
   
   playersToSocket.set(username, socket);
@@ -72,6 +72,19 @@ function updatePlayer(socket) {
   socket.emit('update', data);
 }
 
+function updatePlayerScores(socket) {
+  const playerName = socketToPlayers.get(socket);
+  const player = players.get(playerName);
+  const data = { player: player, players: Object.fromEntries(players) };
+  socket.emit('updateScores', data);
+}
+
+function updateAllPlayerScores() {
+  console.log('Updating all players scores');
+  for (let [username, socket] of playersToSocket) {
+    updatePlayerScores(socket);
+  }
+}
 function updateAll() {
   console.log('Updating all players');
   for (let [username, socket] of playersToSocket) {
@@ -122,6 +135,10 @@ function playerExit(socket, player) {
   players.delete(username);
   playersToSocket.delete(username);
   socketToPlayers.delete(socket);
+  let playerNumber = 1;
+  for (let player of players.values()) {
+    player.number = playerNumber++;
+  }
 
   if (player.isHost) {
     if (players.size > 0) {
@@ -133,6 +150,7 @@ function playerExit(socket, player) {
 
       // Set isHost to true for the first player
       firstPlayer.isHost = true;
+      
 
       // Update the map with the new player object
       players.set(firstKey, firstPlayer);
@@ -144,6 +162,79 @@ function playerExit(socket, player) {
   updateAll();
 }
 
+function playerDisconnects(socket) {
+  // Get the player object associated with the socket
+  const player = players.get(socketToPlayers.get(socket));
+  if (player === undefined) {
+    return;
+  }
+  else {
+    let username = player.username.split(' ')[0];
+
+  // Delete the player from the map
+  players.delete(username);
+
+  // Delete the player from the playersToSocket map
+  playersToSocket.delete(username);
+
+  // Delete the socket from the socketToPlayers map
+  socketToPlayers.delete(socket);
+
+  // If the player was the host, set the host to the first player in the map
+  if (player.isHost) {
+      if (players.size > 0) {
+          // Get the first key in the map
+          const firstKey = players.keys().next().value;
+
+          // Get the player object associated with the first key
+          const firstPlayer = players.get(firstKey);
+
+          // Set isHost to true for the first player
+          firstPlayer.isHost = true;
+
+          // Update the map with the new player object
+          players.set(firstKey, firstPlayer);
+      }
+  }
+  socket.emit('disconnected', players);
+
+  // Update all players
+  updateAll();
+  }
+}
+
+// function handleScores(socket, scores, player) {
+//   let username = player.split(' ')[0];
+//   let playerObject = players.get(username);
+//   playerObject.score = scores;
+//   playerObject.state = 1;
+//   players.set(username, playerObject);
+//   console.log(players);
+//   socket.emit('scores', players);
+//   updateAllPlayerScores();
+// }
+function handleScores(socket, scores, player) {
+  let username = player.split(' ')[0];
+  let playerObject = players.get(username);
+  playerObject.score = scores;
+  playerObject.state = 1;
+  players.set(username, playerObject);
+  
+  // Convert players map to array
+  let playersArray = Array.from(players.values());
+
+  // Sort players array by score in descending order
+  playersArray.sort((a, b) => b.score - a.score);
+
+  // Assign rank to each player
+  for (let i = 0; i < playersArray.length; i++) {
+    playersArray[i].rank = i + 1;
+  }
+
+  console.log(playersArray);
+  socket.emit('scores', playersArray);
+  updateAllPlayerScores();
+}
 //Handle new connection
 io.on('connection', socket => { 
   console.log('New connection');
@@ -152,6 +243,7 @@ io.on('connection', socket => {
   // Handle guest login
   socket.on('guest', (username) => {
     console.log('Guest login with username: ' + username);
+
     handleGuestLogin(socket, username);
   });
 
@@ -164,7 +256,10 @@ io.on('connection', socket => {
   //Handle disconnection
   socket.on('disconnect', () => {
     console.log('Dropped connection');
-    gameState = 0;
+    // Get the player object associated with the socket
+    playerDisconnects(socket);
+    updateAll();
+  
   });
 
   socket.on('nextState', (data) => {
@@ -226,15 +321,25 @@ io.on('connection', socket => {
     playerExit(socket, data.player);
   });
 
-  // socket.on('userJoinRoom', (user) => {
-  //   socket.broadcast.emit('userJoined', user);
-  // });
+  socket.on('scores', (data) => {
+    console.log('Scores are called');
+    handleScores(socket, data.scores, data.player);
+  });
 
-  // socket.on('userExitRoom', () => {
-  //   const userId = socket.id;
-  //   socket.broadcast.emit('userLeft', userId);
-  //   // handle host exit and update host logic...
-  // });
+  socket.on('leaderboard', () => {
+    console.log('Leaderboard is called');
+    for (let [username, socket] of playersToSocket) {
+      let player = players.get(username);
+      console.log(player);
+      let hasPlayerWithStateZero = Array.from(players.values()).some(player => player.state === 0);
+      if (hasPlayerWithStateZero) {
+          socket.emit('leaderboard', false);
+      } else {
+          socket.emit('leaderboard', true);
+      }
+  }
+  
+  })
 
 });
 

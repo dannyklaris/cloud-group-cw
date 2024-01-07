@@ -20,17 +20,40 @@ var app = new Vue({
         players: [],
         hintMessage: '',
         isHost: false,
-        roomUserList: []
+        roomUserList: [],
+        hintCounter: 0,
+        totalScores: 0,
+        playerCounter: 0,
     },
     computed: {
         progressBarWidth() {
             return (this.timeLeft / this.totalTime) * 100;
-        }
+        },
+        playerNumbers() {
+            return Object.keys(this.players).map((_, i) => i + 1);
+        },
+        sortedPlayers() {
+            return Object.values(this.players).sort((a, b) => a.rank - b.rank);
+          }
+        
     },
     mounted: function() {
         connect();
     },
     methods: {
+        scoresPlayer() {
+            let correct = this.correctAnswerTotal * 30;
+            let wrong = (this.questionArray.length - this.correctAnswerTotal) * 0;
+            let hint = this.hintCounter * 10;
+            let total = correct - (wrong + hint);
+           
+            if(total > 0) {
+                this.totalScores = total;
+            } else {
+                this.totalScores = 0;
+            }
+            socket.emit('scores', {scores: this.totalScores, player: this.currentPlayer.username});
+        },
         hint(question) {
             socket.emit('hint', question);
         },
@@ -57,25 +80,24 @@ var app = new Vue({
         showHint: function() {
             var myHint = new bootstrap.Modal(this.$refs.myHint);
             myHint.show();
+            this.hintCounter++;
         },
         guest() {
+            if (this.username === '') {
+                    // Get the alert element
+                var alertElement = document.getElementById('usernameAlert');
+
+                // Remove the 'd-none' class to make the alert visible
+                alertElement.classList.remove('d-none');
+
+                return;
+            }
             socket.emit('guest', this.username);
         },
         setDifficulty(difficulty) {
             socket.emit('setDifficulty', difficulty);
         },
         startTimer() {
-            // this.timeLeft = this.totalTime;
-            // this.timer = setInterval(() => {
-            //     if(this.timeLeft > 0) {
-            //         this.timeLeft--;
-            //     } else {
-            //         this.showModal();
-            //         clearInterval(this.timer);
-                    
-
-            //     }
-            // }, 1000);
             socket.emit('start', this.gameState.state);
         },
         register() {},
@@ -105,6 +127,7 @@ var app = new Vue({
             } 
             else {
                 this.gameState.state = 5;
+                this.scoresPlayer();
                 clearInterval(this.timer);
             }
         },
@@ -136,7 +159,7 @@ var app = new Vue({
             socket.emit('nextState', this.gameState.state);
         },
         leaderboard() {
-            this.gameState.state = 7;
+            socket.emit('leaderboard');
         },
         exit(player) {
             socket.emit('exit', { gameState: 0, player: player }); //back to "landing" page
@@ -166,6 +189,27 @@ function connect() {
         alert('Disconnected');
         app.connected = false;
         app.gameState.state = 0;
+        app.totalTime= 30;
+        app.timeLeft= null;
+        app.timer= null;
+        app.questionNumber= 1;
+        app.answer= 0;
+        app.question= 0;
+        app.questionArray= [];
+        app.questionCounter= 0;
+        app.correctAnswerTotal= 0;
+        app.username= '';
+        app.currentPlayer= { username: '', score: 0, number: 0};
+        app.players =[];
+        app.hintMessage= '';
+        app.isHost = false;
+        app.roomUserList = [];
+        app.hintCounter = 0;
+        
+    });
+
+    socket.on('disconnected', function(players) {
+        app.players = players;
     });
 
     // Handle quiz questions
@@ -214,14 +258,34 @@ function connect() {
         app.players = data;
     });
 
-    socket.on('userJoinRoom', (user) => {
-        this.roomUserList.push(user);
+    socket.on('scores', function(data) {
+        app.players = data;
+        app.gameState.state = 5;
     });
 
-    socket.on('userExitRoom', (data) => {
-        this.roomUserList = this.roomUserList.filter((user) => user.id !== userId);
-        // update host state..
+    socket.on('updateScores', function(data) {
+        app.currentPlayer = data.player;
+        app.players = data.players;
     });
+
+    socket.on('leaderboard', function(data) {
+        var leaderboardAlert = document.getElementById('leaderboardAlert');
+        var leaderboardModal = new bootstrap.Modal(document.getElementById('leaderboardModal'), {
+            keyboard: false
+        })
+
+        
+
+        
+        if (data) {
+            app.gameState.state = 7;
+        } else {
+            // To show the modal
+            leaderboardModal.show();
+            return;
+        }
+    });
+
       
 
 }
