@@ -203,16 +203,6 @@ function playerDisconnects(socket) {
   }
 }
 
-// function handleScores(socket, scores, player) {
-//   let username = player.split(' ')[0];
-//   let playerObject = players.get(username);
-//   playerObject.score = scores;
-//   playerObject.state = 1;
-//   players.set(username, playerObject);
-//   console.log(players);
-//   socket.emit('scores', players);
-//   updateAllPlayerScores();
-// }
 function handleScores(socket, scores, player) {
   let username = player.split(' ')[0];
   let playerObject = players.get(username);
@@ -235,6 +225,45 @@ function handleScores(socket, scores, player) {
   socket.emit('scores', playersArray);
   updateAllPlayerScores();
 }
+
+function handleRegister(socket, username, password) {
+  axios.post(BACKEND_ENDPOINT + '/player/register', {
+    username: username,
+    password: password
+  }).then(
+    response => {
+      socket.emit('register', response.data);
+    }
+  )
+}
+
+function handleLogin(socket, username, password) {
+  axios.post(BACKEND_ENDPOINT + '/player/login', {
+    username: username,
+    password: password
+  }).then(
+    response => {
+      if(response.data.result === true) {
+        gameState = 1;
+        playerNumber++;
+        if (playerNumber === 1) {
+          players.set(username, {username: username, score: 0, number: playerNumber, isHost: true, state: 0});
+        }
+        else {
+          players.set(username, {username: username, score: 0, number: playerNumber, isHost: false, state: 0});
+        }
+        playersToSocket.set(username, socket);
+        socketToPlayers.set(socket, username);
+        // socket.emit('guest', gameState);
+        updateAll();
+      }
+      else {
+        socket.emit('login', response.data);
+      }
+    }
+  )
+}
+
 //Handle new connection
 io.on('connection', socket => { 
   console.log('New connection');
@@ -339,7 +368,17 @@ io.on('connection', socket => {
       }
   }
   
-  })
+  });
+
+  socket.on('register', (data) => {
+    console.log('Register called');
+    handleRegister(socket, data.username, data.password);
+  });
+
+  socket.on('login', (data) => {
+    console.log('Login called');
+    handleLogin(socket, data.username, data.password);
+  });
 
 });
 

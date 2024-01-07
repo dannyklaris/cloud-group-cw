@@ -16,6 +16,7 @@ var app = new Vue({
         questionCounter: 0,
         correctAnswerTotal: 0,
         username: '',
+        password: '',
         currentPlayer: { username: '', score: 0, number: 0},
         players: [],
         hintMessage: '',
@@ -100,8 +101,12 @@ var app = new Vue({
         startTimer() {
             socket.emit('start', this.gameState.state);
         },
-        register() {},
-        login() {},
+        register() {
+            socket.emit('register', { username: this.username, password: this.password });
+        },
+        login() {
+            socket.emit('login', { username: this.username, password: this.password });
+        },
         isUserAnswer(answer) {
             return answer === this.questionArray[this.questionCounter].userAnswer;
         },
@@ -286,6 +291,23 @@ function connect() {
         }
     });
 
-      
+    socket.on('register', function(data) {
+        if(data.result === true) {
+            alert('Successfully registered!');
+        }
+        else {
+            alert(data.msg);
+        }
+    });
+
+    socket.on('login', function(data) {
+        
+        if(data.result === 'false') {
+            alert('Incorrect username or password!');
+        }
+    });
+
+
+    
 
 }

@@ -4,20 +4,20 @@
         
         <form @submit.prevent="login">
             <div class="mb-3">
-                <label for="username" class="form-label" style="color: white">Username</label>
-                <input type="username" class="form-control" id="usernameId" aria-describedby="usernameForm">
+                <label for="username" class="form-label" style="color: white" >Username</label>
+                <input type="username" class="form-control" id="usernameId" aria-describedby="usernameForm" v-model="username">
                 <div id="usernameForm" class="form-text">
                     Choose a cool username that you like!
                 </div>
             </div>
             <div class="mb-3">
-                <label for="password" class="form-label" style="color: white">Password</label>
-                <input type="password" class="form-control" id="passwordId" aria-describedby="passwordForm">
+                <label for="password" class="form-label" style="color: white" >Password</label>
+                <input type="password" class="form-control" id="passwordId" aria-describedby="passwordForm" v-model="password">
                 <div id="passwordForm" class="form-text">
                     Choose a strong password!
                 </div>
-                <button @click="register" type="submit" class="mt-3 btn btn-primary">Sign up!</button>
-                <button type="login" class="mt-3 btn btn-warning">Login</button>
+                <button @click="register" type="button" class="mt-3 btn btn-primary">Sign up!</button>
+                <button @click="login" type="button" class="mt-3 btn btn-warning">Login</button>
                 <p class="mt-3 text-center text-white" style="font-size:large">OR</p>
                 <input type="text" class="form-control mt-3" v-model="username" placeholder="Enter your username">
                 <div id="usernameAlert" class="alert alert-danger d-none mt-3 mb-3" role="alert">
