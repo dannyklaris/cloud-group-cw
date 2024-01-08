@@ -16,6 +16,7 @@ var app = new Vue({
         questionCounter: 0,
         correctAnswerTotal: 0,
         username: '',
+        usernameLogin: '',
         password: '',
         currentPlayer: { username: '', score: 0, number: 0},
         players: [],
@@ -102,10 +103,10 @@ var app = new Vue({
             socket.emit('start', this.gameState.state);
         },
         register() {
-            socket.emit('register', { username: this.username, password: this.password });
+            socket.emit('register', { username: this.usernameLogin, password: this.password });
         },
         login() {
-            socket.emit('login', { username: this.username, password: this.password });
+            socket.emit('login', { username: this.usernameLogin, password: this.password });
         },
         isUserAnswer(answer) {
             return answer === this.questionArray[this.questionCounter].userAnswer;
